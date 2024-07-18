@@ -11,17 +11,6 @@
     ]
   },
   {
-    "id": 2,
-    "apelido": "gui",
-    "nome": "Guilherme Camargo",
-    "nascimento": "1990-01-01",
-    "stack": [
-      "Express",
-      "Rust",
-      "React"
-    ]
-  },
-  {
     "id": 3,
     "apelido": "smiguel",
     "nome": "Miguel Souza",
