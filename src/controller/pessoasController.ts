@@ -13,8 +13,11 @@ export function getPessoas(request:Request, response:Response):void{
 
     response.send(pessoas);
 }
+
 export function getPessoaById(request:Request, response:Response):void{
-    response.send("todo")
+    const id: number = parseInt(request.params.id);
+    const pessoa: Pessoas = Pessoas.findByid(id);
+    response.send(pessoa);
 
 }
 export function removePessoaById(request:Request, response:Response):void{
