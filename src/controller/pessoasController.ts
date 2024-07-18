@@ -49,7 +49,6 @@ export function searchPessoa(request: Request, response: Response):void{
 
     const pessoas:Pessoas[] = Pessoas.findAll();
 
-    try {
         const result = pessoas.filter(pessoa =>
             pessoa.apelido.toLowerCase().includes(search.toLowerCase()) ||
             pessoa.nome.toLowerCase().includes(search.toLowerCase()) ||
@@ -57,11 +56,6 @@ export function searchPessoa(request: Request, response: Response):void{
         )
 
         response.send(result);
-            
-    } catch (error) {
-        console.log(error)
-    }
-
 }
 
 
