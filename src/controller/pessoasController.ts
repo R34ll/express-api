@@ -15,7 +15,7 @@ export function countPessoas(request: Request, response: Response): void {
 export function getPessoas(request: Request, response: Response): void {
     const pessoas: Pessoas[] = Pessoas.findAll();
 
-    response.send(pessoas);
+    response.status(200 ).send(pessoas);
 }
 
 // retorna uma Pessoa pelo seu ID.
@@ -23,7 +23,7 @@ export function getPessoaById(request: Request, response: Response): void {
     const id: number = parseInt(request.params.id);
     const pessoa: Pessoas = Pessoas.findByid(id);
 
-    response.send(pessoa);
+    response.status(200).send(pessoa);
 }
 
 // Cria uma nova Pessoa e guarda-a na "database".
@@ -34,7 +34,11 @@ export function createPessoa(request: Request, response: Response): void {
     const newPessoa: Pessoas = new Pessoas(apelido, nome, nascimento, stack)
     newPessoa.save();
 
-    response.send({ "status": "Pessoa salva com sucesso." });
+
+    response
+        .status(201)
+        .header('Location', `/pessoas/${newPessoa.id}`)
+        .send({ "status": "Pessoa salva com sucesso." });
 }
 
 
@@ -62,7 +66,7 @@ export function searchPessoa(request: Request, response: Response): void {
         pessoa.nascimento.toLowerCase().includes(search.toLowerCase())
     )
 
-    response.send(result);
+    response.status(200).send(result);
 }
 
 

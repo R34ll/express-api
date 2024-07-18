@@ -25,7 +25,7 @@ enum Stack {
 
 // Classe representando a entidade Pessoa
 export class Pessoas {
-    private id: number // Unico
+    public readonly id: number // Unico
     public readonly apelido: string // Unico
     public readonly nome: string;
     public readonly nascimento: string;
@@ -34,39 +34,39 @@ export class Pessoas {
     constructor(apelido: string, nome: string, nascimento: string, stack: Set<Stack>) {
         //  Validação parametros não vazios
         if(!apelido || !nome || !nascimento){
-            throw new ApiError("Preencha todos os campos.",500);
+            throw new ApiError("Preencha todos os campos.",422 );
         }
 
         //  Validação tamanho Stack
         if (stack.size > Object.keys(Stack).length) {
-            throw new ApiError(`Tamanho de stacks '${stack.size}' invalido.`, 500);
+            throw new ApiError(`Tamanho de stacks '${stack.size}' invalido.`, 422 );
         }
 
         // Validação items Stack
         for (const item of stack) {
             if (!Object.values(Stack).includes(item.toLowerCase() as Stack)) {
-                throw new ApiError(`Valor de '${item}' invalido.`, 500);
+                throw new ApiError(`Valor de '${item}' invalido.`, 422 );
             }
         }
 
         // Validação tamanho do apelido
         if (apelido.length > 30) {
-            throw new ApiError("'apelido' deve ter menos de 30 caracteres.", 500);
+            throw new ApiError("'apelido' deve ter menos de 30 caracteres.", 422 );
         }
 
         // Validação de apelido unico.
         if(Pessoas.findByApelido(apelido)){
-            throw new ApiError("'apelido' já usado por outra pessoa.",500);
+            throw new ApiError("'apelido' já usado por outra pessoa.", 404  );
         }
 
         // validação tamanho do nome
         if (nome.length > 100) {
-            throw new ApiError("'nome' deve ter menos de 30 caracteres.", 500);
+            throw new ApiError("'nome' deve ter menos de 30 caracteres.", 422 );
         }
 
         // Validação data no formato correto (YYYY-MM-DD)
         if (!(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(nascimento))) {
-            throw new ApiError("Formato da data de nascimento errada. Siga o formato YYYY-MM-DD", 500);
+            throw new ApiError("Formato da data de nascimento errada. Siga o formato YYYY-MM-DD", 422 );
         }
 
 
@@ -97,7 +97,7 @@ export class Pessoas {
 
             return pessoas;
         } catch (error) {
-            throw new ApiError(`Erro ao tentar ler arquivo local de dados: ${error}`, 500)
+            throw new ApiError(`Erro ao tentar ler arquivo local de dados: ${error}`, 404 )
         }
     }
 
@@ -110,7 +110,7 @@ export class Pessoas {
         const pessoas = Pessoas.findAll();
         const pessoa: Pessoas | undefined = pessoas.find(p => p.id === id);
 
-        if (!pessoa) { throw new ApiError(`Pessoa com id '${id}' não encontrada.`, 404); }
+        if (!pessoa) { throw new ApiError(`Pessoa com id '${id}' não encontrada.`, 404  ); }
 
         return pessoa;
     }
