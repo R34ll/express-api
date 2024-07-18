@@ -7,7 +7,7 @@ const dataPath = path.join(__dirname, './../../data/pessoas.json');
 // Stacks permitidas em uma lista previsível de tecnologias já estabelecidas,
 // facilitando consultas futuras e evitando vulnerabilidades ao impedir a
 // inserção direta de dados de usuários no "banco de dados".
-enum Stack {
+export enum Stack {
     Node = "node",
     Express = "express",
     Typescript = "typescript",
@@ -127,6 +127,26 @@ export class Pessoas {
 
         return pessoa;
     }
+
+    public static searchPessoas(search: string): Pessoas[] {
+        if (!search) { throw new ApiError("Parametro 't' não fornecido na query.", 500) }
+
+        try {
+            const pessoas: Pessoas[] = this.findAll();
+
+            const result = pessoas.filter(pessoa =>
+                pessoa.apelido.toLowerCase().includes(search.toLowerCase()) ||
+                pessoa.nome.toLowerCase().includes(search.toLowerCase()) ||
+                pessoa.nascimento.toLowerCase().includes(search.toLowerCase()) ||
+                Array.from(pessoa.stacks).some(stack => stack.toLowerCase().includes(search.toLowerCase()))
+            );
+
+            return result;
+        } catch (error) {
+            throw new ApiError(`Erro ao tentar buscar pessoas: ${error}`, 201);
+        }
+    }
+
 
     
     /*

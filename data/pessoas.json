@@ -4,7 +4,7 @@
     "apelido": "jao",
     "nome": "João Silva",
     "nascimento": "1990-01-01",
-    "stack": [
+    "stacks": [
       "JavaScript",
       "Node.js",
       "React"
@@ -15,10 +15,20 @@
     "apelido": "gui",
     "nome": "Guilherme Camargo",
     "nascimento": "1990-01-01",
-    "stack": [
+    "stacks": [
       "Express",
       "Rust",
       "React"
+    ]
+  },
+  {
+    "id": 3,
+    "apelido": "Mike",
+    "nome": "Mikezinho",
+    "nascimento": "2024-12-02",
+    "stacks": [
+      "rust",
+      "java"
     ]
   }
 ]
