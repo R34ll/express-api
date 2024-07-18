@@ -17,6 +17,10 @@ router.get("/ping",(request: Request, response: Response) =>{
     }).status(202);
 })
 
+// Endpoint especial
+router.get("/contagem-pessoas", countPessoas);
+
+
 
 app.listen(PORT, () =>
     console.log(`Servidor aberto na porta ${PORT}`)
