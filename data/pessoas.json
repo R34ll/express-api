@@ -1,35 +1,45 @@
 [
-    {
-      "id": 1,
-      "apelido": "jao",
-      "nome": "João Silva",
-      "nascimento": "1990-01-01",
-      "stack": [
-        "JavaScript",
-        "Node.js",
-        "React"
-      ]
-    },
-    {
-        "id": 2,
-        "apelido": "gui",
-        "nome": "Guilherme Camargo",
-        "nascimento": "1990-01-01",
-        "stack": [
-          "Express",
-          "Rust",
-          "React"
-        ]
-      },
-    {
-      "id": 3,
-      "apelido": "smiguel",
-      "nome": "Miguel Souza",
-      "nascimento": "1982-11-30",
-      "stack": [
-        "Python",
-        "Django",
-        "Flask"
-      ]
-    }
+  {
+    "id": 1,
+    "apelido": "jao",
+    "nome": "João Silva",
+    "nascimento": "1990-01-01",
+    "stack": [
+      "JavaScript",
+      "Node.js",
+      "React"
+    ]
+  },
+  {
+    "id": 2,
+    "apelido": "gui",
+    "nome": "Guilherme Camargo",
+    "nascimento": "1990-01-01",
+    "stack": [
+      "Express",
+      "Rust",
+      "React"
+    ]
+  },
+  {
+    "id": 3,
+    "apelido": "smiguel",
+    "nome": "Miguel Souza",
+    "nascimento": "1982-11-30",
+    "stack": [
+      "Python",
+      "Django",
+      "Flask"
+    ]
+  },
+  {
+    "id": 4,
+    "apelido": "Mike",
+    "nome": "Mikezinho",
+    "nascimento": "2024-12-02",
+    "stacks": [
+      "rust",
+      "java"
+    ]
+  }
 ]

@@ -34,7 +34,11 @@ export function createPessoa(request:Request, response:Response):void{
 
 
 export function removePessoaById(request:Request, response:Response):void{
-    response.send("todo")
+    const {id} = request.params;
+
+    Pessoas.removeById(parseInt(id));
+    
+    response.send({"status":"Pessoa removed"});
 }
 
 
