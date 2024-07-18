@@ -1,14 +1,31 @@
 # API de Pessoas
 Esta API que gerencia informações de Pessoas, permitindo realizar operações como criação, busca e remoção de registros.
 
+## Iniciar o Projeto
+
+Para iniciar o projeto, siga estes passos:
+1. Clone o repositório:
+```bash
+git clone https://github.com/R34ll/express-api.git
+```
+2. Instale as dependências:
+```bash
+npm install
+```
+3. Inicie o servidor:
+```bash
+npm run dev
+```
+
+
 # Endpoints Disponíveis
 
 | Método   |      Endpoint      |  Descrição |
 |:----------:|:-------------|:------:|
 | GET |    /pessoas/:id   |   Retorna uma pessoa pelo seu ID específico.|
+| GET | /pessoas?t=search |  Busca pessoas que correspondam a pesquisa. |
 | POST | /pessoas	 |     Cria uma nova pessoa com os dados fornecidos. |
 | DELETE | /pessoas/:id |    Remove uma pessoa pelo seu ID específico. |
-| GET | /pessoas?t=search |  Busca pessoas que correspondam a pesquisa. |
 
 
 # Coleção do Postman 
