@@ -1,26 +1,38 @@
 import { Router } from "express";
 import { createPessoa, getPessoaById, getPessoas, removePessoaById, searchPessoa } from "../controller/pessoasController";
 
-const router = Router()
+const router = Router();
 
+/**
+ * @route GET /pessoas
+ * @description Search for pessoas based on query parameters
+ */
+router.get("/", searchPessoa);
 
-// /pessoas
-//  router.get("/",getPessoas)
+/**
+ * @route GET /pessoas/:id
+ * @description Get a pessoa by its ID
+ */
+router.get("/:id", getPessoaById);
 
-router.get("/",searchPessoa)
+/**
+ * @route DELETE /pessoas/:id
+ * @description Remove a pessoa by its ID
+ */
+router.delete("/:id", removePessoaById);
 
+/**
+ * @route POST /pessoas
+ * @description Create a new pessoa
+ */
+router.post("/", createPessoa);
 
-// /pessoas/123
-router.get("/:id", getPessoaById)
+/**
+ * @route GET /pessoas
+ * @description Get all pessoas
+ */
 
-// /pessoas/123 
-router.delete("/:id",removePessoaById)
+// Descomente a linha abaixo se quiser ter uma rota para obter todas as pessoas
+// router.get("/", getPessoas);
 
-// /pessoas
-router.post("/", createPessoa)
-
-
-
-export default router
-
-
+export default router;

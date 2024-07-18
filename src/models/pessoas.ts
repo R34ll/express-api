@@ -4,7 +4,9 @@ import { ApiError } from '../controller/errorController';
 
 const dataPath = path.join(__dirname, './../../data/pessoas.json');
 
-
+// Stacks permitidas em uma lista previsível de tecnologias já estabelecidas,
+// facilitando consultas futuras e evitando vulnerabilidades ao impedir a
+// inserção direta de dados de usuários no "banco de dados".
 enum Stack {
     Node = "node",
     Express = "express",
@@ -30,32 +32,39 @@ export class Pessoas {
     public readonly stacks: Set<Stack>;
 
     constructor(apelido: string, nome: string, nascimento: string, stack: Set<Stack>) {
+        //  Validação parametros não vazios
         if(!apelido || !nome || !nascimento){
             throw new ApiError("Preencha todos os campos.",500);
         }
 
+        //  Validação tamanho Stack
         if (stack.size > Object.keys(Stack).length) {
             throw new ApiError(`Tamanho de stacks '${stack.size}' invalido.`, 500);
         }
 
+        // Validação items Stack
         for (const item of stack) {
             if (!Object.values(Stack).includes(item.toLowerCase() as Stack)) {
                 throw new ApiError(`Valor de '${item}' invalido.`, 500);
             }
         }
 
+        // Validação tamanho do apelido
         if (apelido.length > 30) {
             throw new ApiError("'apelido' deve ter menos de 30 caracteres.", 500);
         }
 
+        // Validação de apelido unico.
         if(Pessoas.findByApelido(apelido)){
             throw new ApiError("'apelido' já usado por outra pessoa.",500);
         }
 
+        // validação tamanho do nome
         if (nome.length > 100) {
             throw new ApiError("'nome' deve ter menos de 30 caracteres.", 500);
         }
 
+        // Validação data no formato correto (YYYY-MM-DD)
         if (!(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(nascimento))) {
             throw new ApiError("Formato da data de nascimento errada. Siga o formato YYYY-MM-DD", 500);
         }
@@ -76,6 +85,11 @@ export class Pessoas {
         return pessoas[pessoas.length - 1].id + 1;
     }
 
+    /*
+        1. Carrega o arquivo string JSON.
+        2. Converte os dados JSON em um array de Pessoa.
+        3. Retorna o array de pessoas.
+    */
     public static findAll(): Pessoas[] {
         try {
             const data = fs.readFileSync(dataPath, 'utf-8');
@@ -87,6 +101,11 @@ export class Pessoas {
         }
     }
 
+    /*
+        1. Carrega um array de Pessoa utilizando o metodo findAll
+        2. Filtra do array a Pessoa que tem o id igual aquele passado por parametro
+        3. Caso encontrado retorna o objeto da Pessoa, caso não, retorna undefined.
+    */
     public static findByid(id: number): Pessoas {
         const pessoas = Pessoas.findAll();
         const pessoa: Pessoas | undefined = pessoas.find(p => p.id === id);
@@ -96,6 +115,11 @@ export class Pessoas {
         return pessoa;
     }
 
+    /*
+        1. Carrega um array de Pessoa utilizando o metodo findAll
+        2. Filtra do array a Pessoa que tem o apelido igual aquele passado por parametro
+        3. Caso encontrado retorna o objeto da Pessoa, caso não, retorna undefined.
+    */
     public static findByApelido(apelido:string):Pessoas|undefined{
         const pessoas = Pessoas.findAll();
         const pessoa: Pessoas|undefined = pessoas.find(p => p.apelido === apelido);
@@ -104,6 +128,13 @@ export class Pessoas {
         return pessoa;
     }
 
+    
+    /*
+        1. Carrega o arquivo string json.
+        2. Converte para um array de Pessoa.
+        3. Adiciona a nova pessoa incrementando pelo metodo push no fim do array.
+        4. Converte de volta para string JSON e escreve no arquivo.
+    */
     public save(): void{
         try {
             const data = fs.readFileSync(dataPath, 'utf-8');
@@ -120,6 +151,12 @@ export class Pessoas {
     }
 
 
+    /*
+        1. Encontra todas as pessoas no arquivo JSON.
+        2. Filtra as pessoas para remover aquela com o ID especificado.
+        3. Verifica se uma pessoa foi removida com sucesso.
+        4. Atualiza/Reescreve o arquivo JSON.
+    */
     public static removeById(id:number):void{
         if(!id){throw new ApiError("Insira um 'id' valido.",500)}
 

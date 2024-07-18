@@ -11,24 +11,14 @@
     ]
   },
   {
-    "id": 3,
-    "apelido": "smiguel",
-    "nome": "Miguel Souza",
-    "nascimento": "1982-11-30",
+    "id": 2,
+    "apelido": "gui",
+    "nome": "Guilherme Camargo",
+    "nascimento": "1990-01-01",
     "stack": [
-      "Python",
-      "Django",
-      "Flask"
-    ]
-  },
-  {
-    "id": 4,
-    "apelido": "Mike",
-    "nome": "Mikezinho",
-    "nascimento": "2024-12-02",
-    "stacks": [
-      "rust",
-      "java"
+      "Express",
+      "Rust",
+      "React"
     ]
   }
 ]
