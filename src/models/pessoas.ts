@@ -56,5 +56,16 @@ export class Pessoas {
         }
     }
 
+    public static findByid(id: number):Pessoas{
+        const pessoas = Pessoas.findAll();
+        const pessoa: Pessoas | undefined = pessoas.find(p => p.id === id);
+
+        if (!pessoa){throw new ApiError(`Pessoa with id '${id}' not found.`, 404);}
+
+
+        return pessoa;
+
+    }
+
 }
 
