@@ -43,5 +43,26 @@ export function removePessoaById(request:Request, response:Response):void{
 
 
 
+export function searchPessoa(request: Request, response: Response):void{
+    const search:any = request.query.t; //remove any
+    if(!search){throw new ApiError("Parametro 't' não fornecido na query.",500)}
+
+    const pessoas:Pessoas[] = Pessoas.findAll();
+
+    try {
+        const result = pessoas.filter(pessoa =>
+            pessoa.apelido.toLowerCase().includes(search.toLowerCase()) ||
+            pessoa.nome.toLowerCase().includes(search.toLowerCase()) ||
+            pessoa.nascimento.toLowerCase().includes(search.toLowerCase()) 
+        )
+
+        response.send(result);
+            
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
 
 
