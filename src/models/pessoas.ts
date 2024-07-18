@@ -96,11 +96,9 @@ export class Pessoas {
         return pessoa;
     }
 
-    public static findByApelido(apelido:string):Pessoas{
+    public static findByApelido(apelido:string):Pessoas|undefined{
         const pessoas = Pessoas.findAll();
         const pessoa: Pessoas|undefined = pessoas.find(p => p.apelido === apelido);
-
-        if (!pessoa) { throw new ApiError(`Pessoa com apelido '${apelido}' não encontrada.`, 404); }
 
 
         return pessoa;
@@ -120,6 +118,8 @@ export class Pessoas {
             throw new ApiError(`Erro ao tentar salvar nova pessoa: ${error}.`, 500);
         }
     }
+
+
 
 }
 
