@@ -30,6 +30,29 @@ export class Pessoas {
     public readonly stacks: Set<Stack>;
 
     constructor(apelido: string, nome: string, nascimento:string, stack: Set<Stack>){ 
+                if(stack.size > Object.keys(Stack).length ){
+                    throw new ApiError(`Invalid size of stack: ${stack.size}`, 500);
+                }
+        
+                for (const item of stack) {
+                    if(!Object.values(Stack).includes(item.toLowerCase() as Stack)){
+                        throw new ApiError(`Valor de 'stack' invalido: ${item}.`, 500);
+                    }
+                }
+        
+                if(apelido.length > 30){ 
+                    throw new ApiError("'apelido' deve ter menos de 30 caracteres. ",500);
+                }
+        
+                if(nome.length > 100){
+                    throw new ApiError("'nome' deve ter menos de 30 caracteres.",500);
+                }
+        
+                if(!(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(nascimento))){
+                    throw new ApiError("Formato da data de nascimento errada. Siga o formato YYYY-MM-DD",500);
+                }
+        
+
         
         this.id = this.generateId(); // Gera, por incremento automático(ordem crescente), o ID 
         this.apelido = apelido; 
