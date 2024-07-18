@@ -1,6 +1,7 @@
 import express from "express"
 import { Router, Request, Response } from "express";
 import pessoasRouter from "./routes/pessoasRouter";
+import { countPessoas } from "./controller/pessoasControll";
 
 
 

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { createPessoa, getPessoaById, getPessoas, removePessoaById } from "../controller/pessoasControll";
 
 const router = Router()
 
