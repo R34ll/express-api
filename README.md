@@ -17,7 +17,7 @@ Uma coleção do Postman com exemplos de requisições para todos os endpoints a
 # Exemplo JSON
 ```json
 {
-  "id": 1,
+  "id": b19f8f36-7c55-4d8e-a0e7-ee7152a6f4cb,
   "apelido": "jao",
   "nome": "João Silva",
   "nascimento": "1990-01-01",
