@@ -120,6 +120,24 @@ export class Pessoas {
     }
 
 
+    public static removeById(id:number):void{
+        if(!id){throw new ApiError("Insira um 'id' valido.",500)}
+
+
+        try{
+            const pessoas = Pessoas.findAll();
+            const filteredPessoas = pessoas.filter(p => p.id !== id);
+
+            if (pessoas.length === filteredPessoas.length) {
+                throw new ApiError(`Pessoa com id '${id}' não foi encontrada.`, 400);
+            }
+
+            fs.writeFileSync(dataPath, JSON.stringify(filteredPessoas, null, 2), 'utf-8');
+
+        }catch(error){
+            throw new ApiError(`${error}`, 500);
+        }
+    }
 
 }
 
