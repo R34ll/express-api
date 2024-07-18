@@ -48,6 +48,10 @@ export class Pessoas {
             throw new ApiError("'apelido' deve ter menos de 30 caracteres.", 500);
         }
 
+        if(Pessoas.findByApelido(apelido)){
+            throw new ApiError("'apelido' já usado por outra pessoa.",500);
+        }
+
         if (nome.length > 100) {
             throw new ApiError("'nome' deve ter menos de 30 caracteres.", 500);
         }
@@ -87,11 +91,19 @@ export class Pessoas {
         const pessoas = Pessoas.findAll();
         const pessoa: Pessoas | undefined = pessoas.find(p => p.id === id);
 
-        if (!pessoa) { throw new ApiError(`Pessoa with id '${id}' not found.`, 404); }
+        if (!pessoa) { throw new ApiError(`Pessoa com id '${id}' não encontrada.`, 404); }
+
+        return pessoa;
+    }
+
+    public static findByApelido(apelido:string):Pessoas{
+        const pessoas = Pessoas.findAll();
+        const pessoa: Pessoas|undefined = pessoas.find(p => p.apelido === apelido);
+
+        if (!pessoa) { throw new ApiError(`Pessoa com apelido '${apelido}' não encontrada.`, 404); }
 
 
         return pessoa;
-
     }
 
     public save(): void{

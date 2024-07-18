@@ -10,7 +10,7 @@ const router = Router()
 // /pessoas/123
 router.get("/:id", getPessoaById)
 
-// /pessoas/123
+// /pessoas/123 
 router.delete("/:id",removePessoaById)
 
 // /pessoas
