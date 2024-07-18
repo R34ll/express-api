@@ -20,7 +20,7 @@ export function getPessoas(request: Request, response: Response): void {
 
 // retorna uma Pessoa pelo seu ID.
 export function getPessoaById(request: Request, response: Response): void {
-    const id: number = parseInt(request.params.id);
+    const id: string = request.params.id;
     const pessoa: Pessoas = Pessoas.findByid(id);
 
     response.status(200).send(pessoa);
@@ -46,7 +46,7 @@ export function createPessoa(request: Request, response: Response): void {
 export function removePessoaById(request: Request, response: Response): void {
     const { id } = request.params;
 
-    Pessoas.removeById(parseInt(id));
+    Pessoas.removeById(id);
 
     response.send({ "status": "Pessoa removida com sucesso." });
 }

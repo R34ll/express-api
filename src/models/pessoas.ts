@@ -1,5 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+
+
 import { ApiError } from '../controller/errorController';
 
 const dataPath = path.join(__dirname, './../../data/pessoas.json');
@@ -25,7 +28,7 @@ export enum Stack {
 
 // Classe representando a entidade Pessoa
 export class Pessoas {
-    public readonly id: number // Unico
+    public readonly id: string // Unico
     public readonly apelido: string // Unico
     public readonly nome: string;
     public readonly nascimento: string;
@@ -71,7 +74,7 @@ export class Pessoas {
 
 
 
-        this.id = this.generateId(); // Gera, por incremento automático(ordem crescente), o ID 
+        this.id = uuidv4(); 
         this.apelido = apelido;
         this.nome = nome;
         this.nascimento = nascimento;
@@ -79,11 +82,6 @@ export class Pessoas {
 
     }
 
-    // Garante ID unico e auto incrementado
-    private generateId(): number {
-        const pessoas = Pessoas.findAll();
-        return pessoas[pessoas.length - 1].id + 1;
-    }
 
     /*
         1. Carrega o arquivo string JSON.
@@ -106,7 +104,7 @@ export class Pessoas {
         2. Filtra do array a Pessoa que tem o id igual aquele passado por parametro
         3. Caso encontrado retorna o objeto da Pessoa, caso não, retorna undefined.
     */
-    public static findByid(id: number): Pessoas {
+    public static findByid(id: string): Pessoas {
         const pessoas = Pessoas.findAll();
         const pessoa: Pessoas | undefined = pessoas.find(p => p.id === id);
 
@@ -177,7 +175,7 @@ export class Pessoas {
         3. Verifica se uma pessoa foi removida com sucesso.
         4. Atualiza/Reescreve o arquivo JSON.
     */
-    public static removeById(id:number):void{
+    public static removeById(id:string):void{
         if(!id){throw new ApiError("Insira um 'id' valido.",500)}
 
 

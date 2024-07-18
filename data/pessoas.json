@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "e334bf5b-17d1-4a98-83c4-01d49d24f690",
     "apelido": "jao",
     "nome": "João Silva",
     "nascimento": "1990-01-01",
@@ -11,7 +11,7 @@
     ]
   },
   {
-    "id": 2,
+    "id": "b19f8f36-7c55-4d8e-a0e7-ee7152a6f4cb",
     "apelido": "gui",
     "nome": "Guilherme Camargo",
     "nascimento": "1990-01-01",
@@ -20,15 +20,6 @@
       "Rust",
       "React"
     ]
-  },
-  {
-    "id": 3,
-    "apelido": "Mike",
-    "nome": "Mikezinho",
-    "nascimento": "2024-12-02",
-    "stacks": [
-      "rust",
-      "java"
-    ]
   }
+
 ]
