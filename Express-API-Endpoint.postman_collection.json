@@ -1,0 +1,113 @@
+{
+	"info": {
+		"_postman_id": "d585a952-4f7f-46b9-a82d-d7d55e0fb014",
+		"name": "Express API Endpoint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14749474"
+	},
+	"item": [
+		{
+			"name": "findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/pessoas/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "contagem",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/contagem-pessoas",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"contagem-pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "newPessoa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"apelido\":\"Mike\",\r\n    \"nome\":\"Michael\",\r\n    \"nascimento\":\"1999-12-02\",\r\n    \"stack\":[\r\n        \"rust\",\"java\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/pessoas/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pessoas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removeById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/pessoas/300",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pessoas",
+						"300"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/pessoas?t=mike",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pessoas"
+					],
+					"query": [
+						{
+							"key": "t",
+							"value": "mike"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
