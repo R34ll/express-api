@@ -1,11 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import prisma from '../database/prisma';
 
 
 import { ApiError } from '../controller/errorController';
 
 const dataPath = path.join(__dirname, './../../data/pessoas.json');
+
+
 
 // Stacks permitidas em uma lista previsível de tecnologias já estabelecidas,
 // facilitando consultas futuras e evitando vulnerabilidades ao impedir a
@@ -33,6 +36,8 @@ export class Pessoas {
     public readonly nome: string;
     public readonly nascimento: string;
     public readonly stacks: Set<Stack>;
+
+
 
     constructor(apelido: string, nome: string, nascimento: string, stack: Set<Stack>) {
         //  Validação parametros não vazios
@@ -146,26 +151,23 @@ export class Pessoas {
     }
 
 
-    
-    /*
-        1. Carrega o arquivo string json.
-        2. Converte para um array de Pessoa.
-        3. Adiciona a nova pessoa incrementando pelo metodo push no fim do array.
-        4. Converte de volta para string JSON e escreve no arquivo.
-    */
-    public save(): void{
+    public async save(): Promise<void>{
         try {
-            const data = fs.readFileSync(dataPath, 'utf-8');
-            const pessoas: Pessoas[] = JSON.parse(data);
-            
-            pessoas.push(this);
-            const newData = JSON.stringify(pessoas, null, 2);
 
-            fs.writeFileSync(dataPath, newData, 'utf-8');
-
+            await prisma.pessoa.create({
+                data: {
+                    username: this.apelido ,
+                    nome: this.nome,
+                    nascimento: this.nascimento,
+                    stack: JSON.stringify(this.stacks)
+                }
+            })
         } catch (error) {
-            throw new ApiError(`Erro ao tentar salvar nova pessoa: ${error}.`, 500);
-        }
+            if (error.code === 'P2002') { 
+              throw new ApiError(`Apelido "${this.apelido}" já está em uso`, 422);
+            }
+            throw new ApiError(`Erro interno: ${error}`, 500);
+          }
     }
 
 

@@ -18,7 +18,7 @@ app.use("/pessoas", pessoasRouter)
 app.use((error: Error & Partial<ApiError>, req: Request, res: Response, next: NextFunction) => {
     const statusCode = error.statusCode ?? 500
     const message = error.statusCode ? error.message : "Internal Server Error"
-    
+    console.log("API Error: ", error)
     return res.status(statusCode).json({ 
         "API Error": { 
             "status": statusCode, 

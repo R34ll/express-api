@@ -27,12 +27,12 @@ export function getPessoaById(request: Request, response: Response): void {
 }
 
 // Cria uma nova Pessoa e guarda-a na "database".
-export function createPessoa(request: Request, response: Response): void {
+export async function createPessoa(request: Request, response: Response): Promise<void> {
 
     const { apelido, nome, nascimento, stack } = request.body;
 
     const newPessoa: Pessoas = new Pessoas(apelido, nome, nascimento, stack)
-    newPessoa.save();
+    await newPessoa.save();
 
 
     response
