@@ -43,14 +43,19 @@ export async function createPessoa(request: Request, response: Response): Promis
 
 
 // Remove uma pessoa pelo seu ID.
-export function removePessoaById(request: Request, response: Response): void {
+export async function removePessoaById(request: Request, response: Response): Promise<void> {
     const { id } = request.params;
+    var user_id: number = Number(id); 
 
-    Pessoas.removeById(id);
-
-    response.send({ "status": "Pessoa removida com sucesso." });
+    try {
+        await Pessoas.removeById(user_id);
+        console.log("Res: ", id)
+        response.send({ "status": "Pessoa removida com sucesso." });
+    } catch (error: any) {
+        // Handle the error appropriately
+        response.status(500).send({ "error": error.message });
+    }
 }
-
 
 
 //  Pesquisa pessoas com base nos parâmetros apelido, nome e data de nascimento.

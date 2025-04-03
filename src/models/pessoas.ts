@@ -162,36 +162,26 @@ export class Pessoas {
                     stack: JSON.stringify(this.stacks)
                 }
             })
-        } catch (error) {
+        } catch (error: any) {
             if (error.code === 'P2002') { 
               throw new ApiError(`Apelido "${this.apelido}" já está em uso`, 422);
             }
             throw new ApiError(`Erro interno: ${error}`, 500);
           }
     }
+    public static async removeById(id: number): Promise<void> {
+        if(!id) { throw new ApiError("Insira um 'id' valido.", 500) }
+    
+        try {
+            await prisma.pessoa.delete({
+                where: { id: id }
+            });
+        } catch(error: any) {
+            if (error.code === 'P2025') { 
+                throw new ApiError(`ID "${id}" não encontrado`, 422);
+              }
+              throw new ApiError(`Erro interno: ${error}`, 500);
 
-
-    /*
-        1. Encontra todas as pessoas no arquivo JSON.
-        2. Filtra as pessoas para remover aquela com o ID especificado.
-        3. Verifica se uma pessoa foi removida com sucesso.
-        4. Atualiza/Reescreve o arquivo JSON.
-    */
-    public static removeById(id:string):void{
-        if(!id){throw new ApiError("Insira um 'id' valido.",500)}
-
-
-        try{
-            const pessoas = Pessoas.findAll();
-            const filteredPessoas = pessoas.filter(p => p.id !== id);
-
-            if (pessoas.length === filteredPessoas.length) {
-                throw new ApiError(`Pessoa com id '${id}' não foi encontrada.`, 400);
-            }
-
-            fs.writeFileSync(dataPath, JSON.stringify(filteredPessoas, null, 2), 'utf-8');
-
-        }catch(error){
             throw new ApiError(`${error}`, 500);
         }
     }
