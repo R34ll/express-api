@@ -109,24 +109,40 @@ export class Pessoas {
         2. Filtra do array a Pessoa que tem o id igual aquele passado por parametro
         3. Caso encontrado retorna o objeto da Pessoa, caso não, retorna undefined.
     */
-    public static findByid(id: string): Pessoas {
-        const pessoas = Pessoas.findAll();
-        const pessoa: Pessoas | undefined = pessoas.find(p => p.id === id);
+        public static async findById(id: number): Promise<Pessoas|any> {
+            if (!id || isNaN(id)) {
+                throw new ApiError("ID inválido. Forneça um ID numérico válido.", 400);
+            }
+        
+            try {
+                const pessoa = await prisma.pessoa.findUnique({
+                    where: { id }
+                });
+        
+                if (!pessoa) {
+                    console.warn(`Pessoa com id '${id}' não encontrada.`);
+                    throw new ApiError(`Pessoa com id '${id}' não encontrada.`, 404);
+                }
+        
+                console.warn("Pessoa encontrada:", pessoa);
+                return pessoa;
 
-        if (!pessoa) { throw new ApiError(`Pessoa com id '${id}' não encontrada.`, 404  ); }
+            } catch (error: any) {
+                console.error("Erro ao buscar pessoa:", error);
+                
+                if (error instanceof ApiError) {
+                    throw error; 
+                }
+                
+                if (error.code === 'P2025') { 
+                    throw new ApiError(`Pessoa com id '${id}' não encontrada.`, 404);
+                }
+            }
+        } 
 
-        return pessoa;
-    }
-
-    /*
-        1. Carrega um array de Pessoa utilizando o metodo findAll
-        2. Filtra do array a Pessoa que tem o apelido igual aquele passado por parametro
-        3. Caso encontrado retorna o objeto da Pessoa, caso não, retorna undefined.
-    */
     public static findByApelido(apelido:string):Pessoas|undefined{
         const pessoas = Pessoas.findAll();
         const pessoa: Pessoas|undefined = pessoas.find(p => p.apelido === apelido);
-
 
         return pessoa;
     }

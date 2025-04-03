@@ -18,17 +18,22 @@ export function getPessoas(request: Request, response: Response): void {
     response.status(200).send(pessoas);
 }
 
-// retorna uma Pessoa pelo seu ID.
-export function getPessoaById(request: Request, response: Response): void {
-    const id: string = request.params.id;
-    const pessoa: Pessoas = Pessoas.findByid(id);
 
-    response.status(200).send(pessoa);
+export async function getPessoaById(request: Request, response: Response): Promise<void> {
+    try {
+        const id: string = request.params.id;
+        const user_id = Number(id)
+        const pessoa = await Pessoas.findById(user_id);
+    
+        response.status(200).send(pessoa);        
+    } catch (error:any) {
+        response.status(500).send({ "Controller Error": error.message });
+        
+    }
+
 }
 
-// Cria uma nova Pessoa e guarda-a na "database".
 export async function createPessoa(request: Request, response: Response): Promise<void> {
-
     const { apelido, nome, nascimento, stack } = request.body;
 
     const newPessoa: Pessoas = new Pessoas(apelido, nome, nascimento, stack)
