@@ -30,16 +30,16 @@ export enum Stack {
 // Classe representando a entidade Pessoa
 export class Pessoas {
     public readonly id: string // Unico
-    public readonly apelido: string // Unico
+    public readonly username: string // Unico
     public readonly nome: string;
     public readonly nascimento: string;
     public readonly stacks: Set<Stack>;
 
 
 
-    constructor(apelido: string, nome: string, nascimento: string, stack: Set<Stack>) {
+    constructor(username: string, nome: string, nascimento: string, stack: Set<Stack>) {
         //  Validação parametros não vazios
-        if(!apelido || !nome || !nascimento){
+        if(!username || !nome || !nascimento){
             throw new ApiError("Preencha todos os campos.",422 );
         }
 
@@ -56,12 +56,12 @@ export class Pessoas {
         }
 
         // Validação tamanho do apelido
-        if (apelido.length > 30) {
+        if (username.length > 30) {
             throw new ApiError("'apelido' deve ter menos de 30 caracteres.", 422 );
         }
 
         // Validação de apelido unico.
-        if(Pessoas.findByApelido(apelido)){
+        if(Pessoas.findByApelido(username)){
             throw new ApiError("'apelido' já usado por outra pessoa.", 404  );
         }
 
@@ -78,7 +78,7 @@ export class Pessoas {
 
 
         this.id = uuidv4(); 
-        this.apelido = apelido;
+        this.username = username;
         this.nome = nome;
         this.nascimento = nascimento;
         this.stacks = stack;
@@ -92,7 +92,7 @@ export class Pessoas {
             // const pessoas: Pessoas[] = JSON.parse(data);
 
             const pessoas: Pessoas[] = await prisma.pessoa.findMany();
-
+            console.log("Pessoas: ", pessoas)
             return pessoas;
         } catch (error) {
             throw new ApiError(`Erro ao tentar ler arquivo local de dados: ${error}`, 404 )
@@ -130,26 +130,29 @@ export class Pessoas {
             }
         } 
 
-    public static findByApelido(apelido:string):Pessoas|undefined{
+    public static async findByApelido(username:string):Pessoas|undefined{
         const pessoas = Pessoas.findAll();
-        const pessoa: Pessoas|undefined = pessoas.find(p => p.apelido === apelido);
+        const pessoa: Pessoas|undefined = await pessoas.find(p => p.username === username);
 
         return pessoa;
     }
 
-    public static async searchPessoas(search: string): Promise<Pessoas[]> {
-        if (!search) { throw new ApiError("Parametro 't' não fornecido na query.", 500) }
+    public static async searchPessoas(search_: string): Promise<Pessoas[]| null> {
+        if (!search_) { throw new ApiError("Parametro 't' não fornecido na query.", 500) }
+        const search = search_.toLocaleLowerCase(); 
 
         try {
             const pessoas: Pessoas[] = await this.findAll();
-            console.log(pessoas)
-
+            console.log("P: ", pessoas[0].stack)
+ 
             const result = pessoas.filter(pessoa =>
-                pessoa.apelido.toLowerCase().includes(search.toLowerCase()) ||
-                pessoa.nome.toLowerCase().includes(search.toLowerCase()) ||
-                pessoa.nascimento.toLowerCase().includes(search.toLowerCase()) ||
-                Array.from(pessoa.stacks).some(stack => stack.toLowerCase().includes(search.toLowerCase()))
+                pessoa.username.toLowerCase().includes(search)  ||
+                pessoa.nome.toLowerCase().includes(search) ||
+                pessoa.nascimento.toLowerCase().includes(search) ||
+                Array.from(pessoa.stack).filter(stack => stack?.toLowerCase().includes(search))
             );
+
+            console.log("Result::: ", result)
 
             return result;
         } catch (error) {
@@ -163,7 +166,7 @@ export class Pessoas {
 
             await prisma.pessoa.create({
                 data: {
-                    username: this.apelido ,
+                    username: this.username ,
                     nome: this.nome,
                     nascimento: this.nascimento,
                     stack: JSON.stringify(this.stacks)
@@ -171,7 +174,7 @@ export class Pessoas {
             })
         } catch (error: any) {
             if (error.code === 'P2002') { 
-              throw new ApiError(`Apelido "${this.apelido}" já está em uso`, 422);
+              throw new ApiError(`Apelido "${this.username}" já está em uso`, 422);
             }
             throw new ApiError(`Erro interno: ${error}`, 500);
           }

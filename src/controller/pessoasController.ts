@@ -64,13 +64,13 @@ export async function removePessoaById(request: Request, response: Response): Pr
 
 
 //  Pesquisa pessoas com base nos parâmetros apelido, nome e data de nascimento.
-export function searchPessoa(request: Request, response: Response): void {
+export async function searchPessoa(request: Request, response: Response): Promise<void> {
     const search: any = request.query.t; //remove any
 
-    const result = Pessoas.searchPessoas(search);
+    const result = await Pessoas.searchPessoas(search);
 
     response.status(200).send(result);
 }
 
 
-
+ 
