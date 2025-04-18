@@ -5,9 +5,7 @@ import prisma from '../database/prisma';
 
 
 import { ApiError } from '../controller/errorController';
-
-const dataPath = path.join(__dirname, './../../data/pessoas.json');
-
+import { Pessoa } from '@prisma/client';
 
 
 // Stacks permitidas em uma lista previsível de tecnologias já estabelecidas,
@@ -88,15 +86,12 @@ export class Pessoas {
     }
 
 
-    /*
-        1. Carrega o arquivo string JSON.
-        2. Converte os dados JSON em um array de Pessoa.
-        3. Retorna o array de pessoas.
-    */
-    public static findAll(): Pessoas[] {
+    public static async findAll(): Promise<Pessoas[]|any> {
         try {
-            const data = fs.readFileSync(dataPath, 'utf-8');
-            const pessoas: Pessoas[] = JSON.parse(data);
+            // const data = fs.readFileSync(dataPath, 'utf-8');
+            // const pessoas: Pessoas[] = JSON.parse(data);
+
+            const pessoas: Pessoas[] = await prisma.pessoa.findMany();
 
             return pessoas;
         } catch (error) {
@@ -104,11 +99,6 @@ export class Pessoas {
         }
     }
 
-    /*
-        1. Carrega um array de Pessoa utilizando o metodo findAll
-        2. Filtra do array a Pessoa que tem o id igual aquele passado por parametro
-        3. Caso encontrado retorna o objeto da Pessoa, caso não, retorna undefined.
-    */
         public static async findById(id: number): Promise<Pessoas|any> {
             if (!id || isNaN(id)) {
                 throw new ApiError("ID inválido. Forneça um ID numérico válido.", 400);
@@ -147,11 +137,12 @@ export class Pessoas {
         return pessoa;
     }
 
-    public static searchPessoas(search: string): Pessoas[] {
+    public static async searchPessoas(search: string): Promise<Pessoas[]> {
         if (!search) { throw new ApiError("Parametro 't' não fornecido na query.", 500) }
 
         try {
-            const pessoas: Pessoas[] = this.findAll();
+            const pessoas: Pessoas[] = await this.findAll();
+            console.log(pessoas)
 
             const result = pessoas.filter(pessoa =>
                 pessoa.apelido.toLowerCase().includes(search.toLowerCase()) ||

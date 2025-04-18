@@ -12,8 +12,8 @@ export function countPessoas(request: Request, response: Response): void {
 
 
 // retorna todas as Pessoas da base de dados.
-export function getPessoas(request: Request, response: Response): void {
-    const pessoas: Pessoas[] = Pessoas.findAll();
+export async function getPessoas(request: Request, response: Response): Promise<void> {
+    const pessoas: Pessoas[] = await Pessoas.findAll();
 
     response.status(200).send(pessoas);
 }
